@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:         ifthenpay | Payments for SureCart
- * Plugin URI:          https://github.com/ifthenpay/
+ * Plugin URI:          https://github.com/ifthenpay/ifthenpay-payments-for-surecart
  * Description:         SureCart integration for payments with the ifthenpay gateway: Multibanco reference, MB WAY and ifthenpay Gateway (cards, Apple Pay, Google Pay).
  * Version:             1.0.0
  * Requires at least:   6.5
