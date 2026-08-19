@@ -1,0 +1,30 @@
+{
+    "name": "ifthenpay/ifthenpay-payments-for-surecart",
+    "description": "SureCart integration for payments with the ifthenpay gateway: Multibanco reference, MB WAY and ifthenpay Gateway (cards, Apple Pay, Google Pay).",
+    "type": "wordpress-plugin",
+    "license": "GPL-3.0-or-later",
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.2 || ^9.6",
+        "wp-phpunit/wp-phpunit": "^6.8",
+        "yoast/phpunit-polyfills": "^4.0",
+        "brain/monkey": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ifthenpay\\SureCart\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ifthenpay\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test:unit": "XDEBUG_MODE=off vendor/bin/phpunit -c tests/phpunit.unit.xml.dist",
+        "test:int": "XDEBUG_MODE=off vendor/bin/phpunit -c tests/phpunit.xml.dist",
+        "test:all": "composer test:unit && composer test:int"
+    }
+}

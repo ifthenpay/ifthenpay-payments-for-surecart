@@ -1,0 +1,510 @@
+/*
+ * Deliberately copies SureCart's own `sc-dialog` panel — same background,
+ * radius, shadow and z-index tokens (`--sc-panel-background-color`,
+ * `--sc-border-radius-medium`, `--sc-shadow-x-large`, `--sc-z-index-dialog`)
+ * — so the checkout-time modal reads as part of SureCart's own checkout,
+ * not a bolted-on widget. Everything else (spacing, buttons, our own
+ * status colors) still follows this plugin's admin design language.
+ *
+ * The panel itself has no fixed height: `payment-modal.js`'s `setBody()`
+ * measures each state's natural content height and animates the panel to
+ * it, so short content (loading, the phone step) never leaves a slab of
+ * empty space below it, and taller content (Multibanco's details list)
+ * never has to scroll inside a box sized for something else. All methods
+ * settle at the same width once their real content is known
+ * (`.iftp-sc-modal-panel`, 400px) — only `--compact` (the brief
+ * "we don't know what we're showing yet" loading state, shared by every
+ * method) uses a smaller, square-ish footprint.
+ */
+
+.iftp-sc-modal-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: calc( var( --sc-z-index-dialog, 100000 ) + 1 );
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var( --sc-overlay-background-color, rgba( 55, 65, 81, 0.5 ) );
+	padding: var( --sc-spacing-medium, 16px );
+	font-family: var( --sc-font-sans ), sans-serif;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s ease;
+}
+
+.iftp-sc-modal-overlay--open {
+	opacity: 1;
+	visibility: visible;
+}
+
+.iftp-sc-modal-panel {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 400px;
+	max-width: 100%;
+	max-height: calc( 100vh - 32px );
+	/* No scrollbar, ever — `setBody()` always sizes the panel to its exact
+	 * content height, so anything a scrollbar would reveal is a sizing bug,
+	 * not content that legitimately needs to scroll. */
+	overflow: hidden;
+	background-color: var( --sc-panel-background-color, #fff );
+	border-radius: var( --sc-border-radius-medium, 0.35em );
+	box-shadow: var( --sc-shadow-x-large, 0 4px 16px rgba( 13, 19, 30, 0.1 ) );
+	/* No bottom padding: the panel's own top/left/right padding is already
+	 * enough breathing room on its own — anything below the last element
+	 * gets its own spacing from that element (a button's padding, a card's
+	 * padding), so adding panel padding on top of that doubled up into dead
+	 * space at the bottom. */
+	padding: var( --sc-spacing-large, 1.25em ) var( --sc-spacing-large, 1.25em ) 0;
+	transform: scale( 0.96 ) translateY( 8px );
+	opacity: 0;
+	transition: transform 0.2s ease, opacity 0.2s ease, width 0.32s cubic-bezier( 0.4, 0, 0.2, 1 ), height 0.32s cubic-bezier( 0.4, 0, 0.2, 1 );
+}
+
+.iftp-sc-modal-overlay--open .iftp-sc-modal-panel {
+	transform: scale( 1 ) translateY( 0 );
+	opacity: 1;
+}
+
+/* Brief "we don't know what we're showing yet" loading state — a small,
+ * roughly square footprint shared by every method, instead of the full
+ * 400px-wide layout used once real content (details list, phone step,
+ * approval ring) is known. */
+.iftp-sc-modal-panel--compact {
+	width: 280px;
+	min-height: 220px;
+}
+
+/* The three "outcome" panels (paid / terminal / error) are always this exact
+ * size regardless of method or which specific message is showing — Multibanco's
+ * own expiry text is a single short line, MB WAY's runs to three, and no
+ * natural-height measurement of either one reads as "the same result screen"
+ * the way a genuinely fixed size does. `!important` so this always wins over
+ * `setBody()`'s own inline `height`/`width` (still set, and still animated —
+ * see `setBody()` — just no longer able to override this). */
+.iftp-sc-modal-panel--result {
+	width: 400px !important;
+	height: 278px !important;
+}
+
+.iftp-sc-modal-close {
+	position: absolute;
+	top: var( --sc-spacing-small, 8px );
+	right: var( --sc-spacing-small, 8px );
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: none;
+	background: transparent;
+	font-size: 22px;
+	line-height: 1;
+	cursor: pointer;
+	color: var( --sc-color-gray-500, #6b7280 );
+	border-radius: 50%;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.iftp-sc-modal-close:hover {
+	background: var( --sc-color-gray-100, #f3f4f6 );
+	color: var( --sc-color-gray-900, #111827 );
+}
+
+.iftp-sc-modal-close:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 var( --sc-focus-ring-width, 3px ) var( --sc-focus-ring-color-primary, rgba( 0, 96, 156, 0.15 ) );
+}
+
+/* Centered both ways: the panel grows/shrinks to fit its content
+ * (see `setBody()`), so vertical centering here just keeps short content
+ * (a spinner, the approval ring) from reading as glued to the top of a
+ * taller box, and keeps every state's rhythm consistent. No top margin of
+ * its own — the panel's own top padding is already the right amount of
+ * space under the × button, so adding more here just doubled it up. */
+.iftp-sc-modal-body {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var( --sc-spacing-medium, 16px );
+	color: var( --sc-color-gray-700, #374151 );
+	text-align: center;
+	padding-bottom: var( --sc-spacing-medium, 16px );
+}
+
+.iftp-sc-modal-body > * {
+	width: 100%;
+}
+
+/*
+ * Matches SureCart's own order-confirmation icon exactly — same class
+ * shapes (`.confirm__icon` / `.confirm__icon-container`), same 55px circle,
+ * same centered `sc-icon` — found directly in their compiled component
+ * source. `--success` reuses their own choice of the brand primary color
+ * for the check circle; `--danger` is our own equivalent for failed/
+ * cancelled/error states, which SureCart's dialog has no version of.
+ */
+.iftp-sc-modal-confirmation__icon {
+	display: flex;
+	justify-content: center;
+}
+
+.iftp-sc-modal-confirmation__icon-circle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 55px;
+	height: 55px;
+	border-radius: 999999px;
+	font-size: 26px;
+	line-height: 1;
+	color: var( --sc-color-white, #fff );
+}
+
+.iftp-sc-modal-confirmation__icon-circle--success {
+	background: var( --sc-color-primary-500, #00609c );
+}
+
+.iftp-sc-modal-confirmation__icon-circle--danger {
+	background: var( --sc-color-danger-500, #ef4444 );
+}
+
+.iftp-sc-modal-confirmation {
+	text-align: center;
+}
+
+.iftp-sc-modal-confirmation__title {
+	margin: 0 0 var( --sc-spacing-x-small, 4px );
+	font-size: var( --sc-font-size-x-large, 1.25em );
+	font-weight: var( --sc-font-weight-semibold, 500 );
+	color: var( --sc-color-gray-900, #111827 );
+}
+
+.iftp-sc-modal-confirmation__message {
+	margin: 0;
+	color: var( --sc-color-gray-600, #4b5563 );
+}
+
+.iftp-sc-modal-loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var( --sc-spacing-small, 8px );
+	text-align: center;
+	padding: var( --sc-spacing-medium, 16px ) 0;
+}
+
+.iftp-sc-modal-loading p {
+	margin: 0;
+}
+
+/*
+ * Header: the method's own logo instead of a text abbreviation, alongside
+ * SureCart's order number — centered at the top of the panel like a small
+ * badge, read at a glance the same way the payment-method choice list
+ * already shows each method's icon. A plain vertical rule (not the literal
+ * text `|`) separates the logo from the order number on the same line. A
+ * hairline underneath (full panel width, via `.iftp-sc-modal-body > *`'s
+ * 100% width) sets it apart from the content below, the same way a dialog's
+ * header is visually distinct from its body — tinted with the same brand
+ * blue used everywhere else in this modal (buttons, the safe-close card's
+ * top rule) instead of a neutral gray, so it reads as part of the same
+ * design language rather than a generic divider.
+ *
+ * `margin-top` nudges the icon/order row up slightly: the panel's own top
+ * padding plus this row's bottom spacing otherwise left it looking closer
+ * to the × button than to the content below, i.e. more space above than
+ * below.
+ */
+.iftp-sc-modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var( --sc-spacing-small, 10px );
+	align-self: center;
+	margin-top: -6px;
+	padding-bottom: var( --sc-spacing-small, 12px );
+	margin-bottom: var( --sc-spacing-small, 10px );
+	border-bottom: 1px solid rgba( 0, 96, 156, 0.25 );
+}
+
+.iftp-sc-modal-header__icon {
+	width: 34px;
+	height: 34px;
+	flex-shrink: 0;
+	object-fit: contain;
+}
+
+.iftp-sc-modal-header__separator {
+	width: 1px;
+	height: 22px;
+	flex-shrink: 0;
+	background: var( --sc-color-gray-300, #d1d5db );
+}
+
+.iftp-sc-modal-header__order {
+	font-weight: var( --sc-font-weight-semibold, 600 );
+	font-size: var( --sc-font-size-large, 17px );
+	color: var( --sc-color-gray-900, #111827 );
+}
+
+/* ------------------------------------------------------------------ *
+ * Multibanco
+ * ------------------------------------------------------------------ */
+
+.iftp-sc-modal-multibanco {
+	display: flex;
+	flex-direction: column;
+	gap: var( --sc-spacing-medium, 16px );
+	width: 100%;
+	text-align: left;
+}
+
+.iftp-sc-modal-section-title {
+	margin: 0;
+	font-size: var( --sc-font-size-medium, 0.95em );
+	font-weight: var( --sc-font-weight-semibold, 600 );
+	color: var( --sc-color-gray-700, #374151 );
+}
+
+.iftp-sc-modal-list {
+	margin: 0;
+}
+
+.iftp-sc-modal-list > div {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	padding: var( --sc-spacing-x-small, 6px ) 0;
+	border-bottom: 1px solid var( --sc-color-gray-200, #e5e7eb );
+}
+
+.iftp-sc-modal-list > div:last-child {
+	border-bottom: none;
+}
+
+.iftp-sc-modal-list dt {
+	color: var( --sc-color-gray-600, #6b7280 );
+}
+
+.iftp-sc-modal-list dd {
+	margin: 0;
+	font-weight: var( --sc-font-weight-bold, 600 );
+	color: var( --sc-color-gray-900, #111827 );
+}
+
+.iftp-sc-modal-countdown {
+	font-variant-numeric: tabular-nums;
+	font-weight: var( --sc-font-weight-bold, 600 );
+}
+
+/* Replaces the old plain "you can safely close this" text notice — an
+ * icon + a two-part explanation (title, then plain-language detail) reads
+ * more like reassurance and less like fine print, for a customer who has
+ * no idea what a Multibanco reference is or why nothing on screen is
+ * "loading" anymore. A light shadow + a colored top rule mark it as its
+ * own card without the heavier filled-background/all-round-border look. */
+.iftp-sc-modal-safe-close {
+	display: flex;
+	gap: var( --sc-spacing-small, 10px );
+	align-items: flex-start;
+	text-align: left;
+	border-top: 2px solid #00609c;
+	border-radius: 0 0 var( --sc-border-radius-medium, 8px ) var( --sc-border-radius-medium, 8px );
+	padding: var( --sc-spacing-small, 12px ) var( --sc-spacing-x-small, 4px );
+	box-shadow: 0 6px 14px rgba( 17, 24, 39, 0.06 );
+}
+
+.iftp-sc-modal-safe-close__icon {
+	flex-shrink: 0;
+	width: 18px;
+	height: 18px;
+	margin-top: 2px;
+	color: var( --sc-color-primary-500, #00609c );
+}
+
+.iftp-sc-modal-safe-close__title {
+	margin: 0 0 2px;
+	font-weight: var( --sc-font-weight-semibold, 600 );
+	font-size: var( --sc-font-size-small, 13px );
+	color: var( --sc-color-gray-900, #111827 );
+}
+
+.iftp-sc-modal-safe-close__message {
+	margin: 0;
+	font-size: var( --sc-font-size-x-small, 12px );
+	line-height: var( --sc-line-height-normal, 1.5 );
+	color: var( --sc-color-gray-600, #4b5563 );
+}
+
+/* ------------------------------------------------------------------ *
+ * MB WAY
+ * ------------------------------------------------------------------ */
+
+/* No fixed width rule here: `setBody()`'s `square` option sizes each of
+ * MB WAY's steps (both width and height) to its own content directly via
+ * inline styles, since a single shared width fit one step and left the
+ * other mostly empty. */
+
+/* No boxed card here — matches Multibanco's own plain, unboxed layout
+ * (`.iftp-sc-modal-multibanco`) instead of the previous tinted/bordered
+ * container. */
+.iftp-sc-modal-mbway-phone {
+	display: flex;
+	flex-direction: column;
+	gap: var( --sc-spacing-medium, 16px );
+	width: 100%;
+	text-align: left;
+}
+
+/* An underlined field instead of the default all-around box: `sc-input`
+ * exposes its border/background as plain CSS custom properties, which
+ * (like any custom property) cross into its shadow DOM the same as
+ * everywhere else — so they can be overridden from here without touching
+ * the component itself. The border color is made transparent (the
+ * component's own `border` is one shorthand with a single color, so there's
+ * no per-side property to target) and a bottom-only line is drawn instead
+ * via `--sc-input-box-shadow` (an inset shadow). `--focus-ring` replaces the
+ * default all-around glow with that same line turning the brand color on
+ * focus, instead of a boxed-in glow appearing from nowhere. */
+.iftp-sc-modal-phone-input {
+	width: 100%;
+	--sc-input-border-color: transparent;
+	--sc-input-border-color-hover: transparent;
+	--sc-input-background-color: transparent;
+	--sc-input-background-color-hover: transparent;
+	--sc-input-background-color-focus: transparent;
+	--sc-input-box-shadow: inset 0 -1px 0 0 var( --sc-color-gray-300, #dce0e6 );
+	--focus-ring: inset 0 -2px 0 0 var( --sc-color-primary-500, #00609c );
+}
+
+.iftp-sc-modal-mbway-waiting {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var( --sc-spacing-medium, 16px );
+	text-align: center;
+}
+
+/* A countdown ring mirroring the MB WAY app's own approval-countdown UI:
+ * a gray track that fills clockwise in orange as `payment-modal.js`'s
+ * `startRingCountdown()` updates `--iftp-ring-progress` every second, with
+ * the remaining time ticking in the middle. */
+.iftp-sc-modal-ring {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 140px;
+	height: 140px;
+	border-radius: 50%;
+	background: conic-gradient( #ff7a00 calc( var( --iftp-ring-progress, 0 ) * 1% ), var( --sc-color-gray-200, #e5e7eb ) 0 );
+	transition: background 1s linear;
+}
+
+.iftp-sc-modal-ring::before {
+	content: '';
+	position: absolute;
+	inset: 18px;
+	border-radius: 50%;
+	background: var( --sc-panel-background-color, #fff );
+}
+
+.iftp-sc-modal-ring__value {
+	position: relative;
+	z-index: 1;
+	font-size: 26px;
+	font-weight: var( --sc-font-weight-bold, 700 );
+}
+
+.iftp-sc-modal-mbway-waiting__title {
+	margin: 0;
+	font-size: var( --sc-font-size-large, 1.05em );
+	font-weight: var( --sc-font-weight-semibold, 600 );
+	color: var( --sc-color-gray-900, #111827 );
+}
+
+.iftp-sc-modal-mbway-waiting__message {
+	margin: 0;
+	color: var( --sc-color-gray-600, #4b5563 );
+}
+
+/* ------------------------------------------------------------------ *
+ * Shared buttons / confirm row
+ * ------------------------------------------------------------------ */
+
+.iftp-sc-modal-send,
+.iftp-sc-modal-continue {
+	appearance: none;
+	border: none;
+	border-radius: var( --sc-border-radius-medium, 8px );
+	background: var( --sc-color-primary-500, #00609c );
+	color: var( --sc-color-white, #fff );
+	font-family: inherit;
+	font-size: var( --sc-font-size-medium, 15px );
+	font-weight: var( --sc-font-weight-semibold, 600 );
+	padding: var( --sc-spacing-small, 10px ) var( --sc-spacing-medium, 16px );
+	cursor: pointer;
+	width: 100%;
+	transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.iftp-sc-modal-send:hover,
+.iftp-sc-modal-continue:hover {
+	background: var( --sc-color-primary-600, #004f82 );
+}
+
+.iftp-sc-modal-send:active,
+.iftp-sc-modal-continue:active {
+	transform: scale( 0.98 );
+}
+
+.iftp-sc-modal-send:focus-visible,
+.iftp-sc-modal-continue:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 var( --sc-focus-ring-width, 3px ) var( --sc-focus-ring-color-primary, rgba( 0, 96, 156, 0.25 ) );
+}
+
+.iftp-sc-modal-confirm-row {
+	display: flex;
+	gap: var( --sc-spacing-small, 8px );
+}
+
+.iftp-sc-modal-confirm-row .iftp-sc-modal-send,
+.iftp-sc-modal-confirm-row .iftp-sc-modal-continue {
+	width: auto;
+	flex: 1;
+}
+
+.iftp-sc-modal-confirm-row .iftp-sc-modal-confirm-no {
+	background: transparent;
+	color: var( --sc-color-gray-700, #374151 );
+	border: 1px solid var( --sc-color-gray-300, #dce0e6 );
+}
+
+.iftp-sc-modal-confirm-row .iftp-sc-modal-confirm-no:hover {
+	background: var( --sc-color-gray-100, #f3f4f6 );
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.iftp-sc-modal-overlay,
+	.iftp-sc-modal-panel,
+	.iftp-sc-modal-close,
+	.iftp-sc-modal-send,
+	.iftp-sc-modal-continue,
+	.iftp-sc-modal-ring {
+		transition: none !important;
+	}
+
+	.iftp-sc-modal-loading sc-spinner {
+		animation: none !important;
+	}
+}
+
+.iftp-sc-modal-panel--multibanco{
+	height:auto !important;
+}

@@ -1,0 +1,704 @@
+# Copyright (C) 2026 ifthenpay-payments-for-surecart
+# This file is distributed under the same license as the ifthenpay-payments-for-surecart package.
+msgid ""
+msgstr ""
+"Project-Id-Version: ifthenpay-payments-for-surecart 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ifthenpay-payments-for-surecart\n"
+"POT-Creation-Date: 2026-08-17 09:02:04+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: ifthenpay-payments-for-surecart.php:75
+msgid "ifthenpay | Payments for SureCart requires the SureCart plugin to be installed and active."
+msgstr ""
+
+#: src/Admin/ProcessorsTabCard.php:51
+msgid "Connect with ifthenpay to add Multibanco, MB WAY, and ifthenpay Gateway buttons to your checkout."
+msgstr ""
+
+#: src/Admin/ProcessorsTabCard.php:53
+msgid "Live Payments Enabled"
+msgstr ""
+
+#: src/Admin/ProcessorsTabCard.php:54
+msgid "Live Payments Disabled"
+msgstr ""
+
+#: src/Admin/ProcessorsTabCard.php:56
+msgid "Available Processors"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:153 src/Admin/SettingsPage.php:154 src/Admin/SettingsPage.php:394 src/Admin/SettingsPage.php:410 src/Api/IfthenpayHelper.php:248
+msgid "ifthenpay"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:194
+msgid "Loading payment methods…"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:195
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:196
+msgid "Sending…"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:197
+msgid "Request sent to ifthenpay support."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:198 src/Admin/SettingsPage.php:1590
+msgid "Activate Method"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:332
+msgid "Account cache cleared."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:345 src/Admin/SettingsPage.php:632
+msgid "Settings"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:349 src/Admin/SettingsPage.php:610 src/Admin/SettingsPage.php:1144 src/Admin/SettingsPage.php:1161 src/Admin/SettingsPage.php:1178 src/Admin/SettingsPage.php:1265 src/Admin/SettingsPage.php:1679 src/Api/IfthenpayHelper.php:245
+msgid "ifthenpay Gateway"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:353 src/Admin/SettingsPage.php:616 src/Admin/SettingsPage.php:800 src/Admin/SettingsPage.php:812 src/Admin/SettingsPage.php:814 src/Admin/SettingsPage.php:1131 src/Admin/SettingsPage.php:1264 src/Api/IfthenpayHelper.php:233
+msgid "MB WAY"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:357 src/Admin/SettingsPage.php:622 src/Admin/SettingsPage.php:850 src/Admin/SettingsPage.php:866 src/Admin/SettingsPage.php:871 src/Admin/SettingsPage.php:1122 src/Admin/SettingsPage.php:1263 src/Api/IfthenpayHelper.php:232 src/Checkout/CheckoutAssets.php:102
+msgid "Multibanco"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:361 src/Admin/SettingsPage.php:927
+msgid "ifthenpay Orders"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:406
+msgid "Clear Account Cache"
+msgstr ""
+
+#. translators: %s: plugin version
+
+#: src/Admin/SettingsPage.php:417
+msgid "Version %s"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:432
+msgid "You'll need to connect your ifthenpay Backoffice before you can connect and use any payment method."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:637 src/Admin/SettingsPage.php:642 src/Admin/SettingsPage.php:1772
+msgid "Backoffice Key"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:638
+msgid "Your ifthenpay Backoffice connection. Every payment method below depends on it."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:645
+msgid "Disconnect your ifthenpay Backoffice? All payment methods will stop working until you reconnect."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:650
+msgid "Payment methods"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:651
+msgid "Turn a method on or off at checkout without losing its setup. Connect a method on its own tab first, then activate it here."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:661
+msgid "Active"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:662 src/Admin/SettingsPage.php:968 src/Admin/SettingsPage.php:1336 src/Admin/SettingsPage.php:1551
+msgid "Method"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:663 src/Admin/SettingsPage.php:1335
+msgid "Status"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:689 src/Admin/SettingsPage.php:1837
+msgid "Connected"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:689
+msgid "Not connected"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:693
+msgid "Configure"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:734 src/Admin/SettingsPage.php:774
+msgid "Save"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:815
+msgid "Pick which account on your ifthenpay Backoffice to use. Lets customers pay with the MB WAY app."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:821
+msgid "No MB WAY account found on your ifthenpay Backoffice."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:826 src/Admin/SettingsPage.php:883
+msgid "Connecting registers the notify-URL callback with ifthenpay automatically, and activates this method once you turn it on in Settings."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:872
+msgid "Pick which account on your ifthenpay Backoffice to use. Lets customers pay by Multibanco reference at any ATM or via home banking."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:878
+msgid "No Multibanco account found on your ifthenpay Backoffice."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:887 src/Admin/SettingsPage.php:896
+msgid "Expiry"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:888 src/Admin/SettingsPage.php:897
+msgid "Controls how long a Multibanco reference stays valid before the customer can no longer pay it."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:891
+msgid "This is a legacy Entity/Sub-entity account. Its references never expire, so there is no expiry to configure."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:901 src/Admin/SettingsPage.php:1734
+msgid "Expiry days"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:903
+msgid "Sent to ifthenpay as the reference's expiry. A payment session still unpaid after this many days is also marked expired."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:943
+msgid "Payment entries"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:944
+msgid "Every Multibanco, MB WAY and ifthenpay Gateway payment attempt received through ifthenpay."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:954
+msgid "No payments match your filters."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:956
+msgid "No payments yet."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:967
+msgid "Payment ID"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:969
+msgid "Request ID"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:970 src/Checkout/CheckoutAssets.php:138 src/Frontend/views/instructions.php:60
+msgid "Amount"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:971
+msgid "Entity & Reference"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:972
+msgid "Phone"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:973
+msgid "Payment Link"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:974
+msgid "State"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1076
+msgid "Open link"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1231
+msgid "All statuses"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1232 src/Frontend/views/instructions.php:34
+msgid "Paid"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1233
+msgid "Pending"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1234
+msgid "Failed"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1235
+msgid "Cancelled"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1236
+msgid "Expired"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1262
+msgid "All methods"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1266 src/Api/IfthenpayHelper.php:234
+msgid "Card"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1267 src/Api/IfthenpayHelper.php:235
+msgid "Apple Pay"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1268 src/Api/IfthenpayHelper.php:236
+msgid "Google Pay"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1269 src/Api/IfthenpayHelper.php:237
+msgid "Pix"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1340
+msgid "Search"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1345
+msgid "Payment ID, Request ID, phone…"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1352
+msgid "Filter"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1359
+msgid "Clear"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1412
+msgid "Go to"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1452
+msgid "This Gateway Key was not found on your ifthenpay Backoffice."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1540
+msgid "No methods are available for this Gateway Key yet. Contact ifthenpay support to enable some."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1550
+msgid "Enabled"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1552 src/Admin/SettingsPage.php:1901
+msgid "Account"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1588
+msgid "Not activated"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1614
+msgid "— None —"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1624
+msgid "Default payment method"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1627
+msgid "Which method is pre-selected on ifthenpay's hosted payment page."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1645
+msgid "We couldn't fetch any Gateway Keys for this Backoffice Key."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1649
+msgid "Disconnect ifthenpay ifthenpay Gateway? Your Gateway Key and methods selection will be cleared."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1684
+msgid "Gateway & methods"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1685
+msgid "Every method provisioned on this Gateway Key is listed here, including Multibanco and MB WAY if enabled on it — separate from the standalone keys on their own tabs."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1696
+msgid "Gateway Key"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1699
+msgid "Selecting a different key and saving refreshes the methods below."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1719
+msgid "Hosted page"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1720
+msgid "Customize the checkout page customers land on to complete a ifthenpay Gateway payment."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1724
+msgid "Description"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1726
+msgid "Shown to the customer on the hosted payment page. Leave blank to use the default."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1729 src/Api/PaymentInitiator.php:74
+msgid "Order at %s"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1736
+msgid "Payment sessions still unpaid after this many days are marked expired."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1746
+msgid "Saving registers the ifthenpay Gateway callback with ifthenpay automatically, and activates this method once you turn it on in Methods."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1762
+msgid "Connect your ifthenpay account"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1764
+msgid "We couldn't verify this Backoffice Key. Double check it and try again."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1774
+msgid "Found in your ifthenpay Backoffice, under Account."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1779
+msgid "Connect"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1808
+msgid "Disconnect"
+msgstr ""
+
+#. translators: %s: account alias/name from the ifthenpay Backoffice
+
+#: src/Admin/SettingsPage.php:1886
+msgid "We found one account on your ifthenpay Backoffice: %s"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:1897
+msgid "— Select an account —"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:2026 src/Admin/SettingsPage.php:2063 src/Admin/SettingsPage.php:2097 src/Admin/SettingsPage.php:2131 src/Admin/SettingsPage.php:2168 src/Admin/SettingsPage.php:2187 src/Admin/SettingsPage.php:2214
+msgid "You are not allowed to do this."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:2273
+msgid "Insufficient permissions."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:2280
+msgid "Missing Gateway Key."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:2321
+msgid "Missing method or Gateway Key."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:2326
+msgid "Activation request already sent. Please wait 24 hours before requesting again."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:2347
+msgid "Activation request sent to ifthenpay support."
+msgstr ""
+
+#. translators: %s: link to SureCart's API settings
+
+#: src/Admin/SettingsPage.php:2421
+msgid "ifthenpay payment methods weren't created yet. SureCart's API token isn't configured, so we couldn't add the Multibanco, MB WAY, and ifthenpay Gateway methods automatically. Add the token, then revisit this page to finish setup. %s"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:2422
+msgid "SureCart API settings"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:2433
+msgid "ifthenpay payment methods added. We've created Multibanco, MB WAY, and ifthenpay Gateway as Manual Payment Methods in SureCart. Add your ifthenpay keys below, then activate them in Methods."
+msgstr ""
+
+#: src/Api/AbstractIfthenpayClient.php:74
+msgid "ifthenpay returned an unexpected response."
+msgstr ""
+
+#: src/Api/IfthenpayClient.php:77
+msgid "ifthenpay could not generate a Multibanco reference."
+msgstr ""
+
+#: src/Api/IfthenpayClient.php:116
+msgid "This phone number is not registered with MB WAY."
+msgstr ""
+
+#: src/Api/IfthenpayClient.php:123
+msgid "ifthenpay could not send the MB WAY payment request."
+msgstr ""
+
+#: src/Api/IfthenpayClient.php:210
+msgid "ifthenpay could not create a ifthenpay Gateway session."
+msgstr ""
+
+#: src/Api/MultibancoOfflineReferenceGenerator.php:48
+msgid "Invalid Multibanco entity/sub-entity."
+msgstr ""
+
+#: src/Api/MultibancoOfflineReferenceGenerator.php:56
+msgid "Amount is too large for an offline Multibanco reference."
+msgstr ""
+
+#: src/Api/PaymentInitiator.php:90
+msgid "Unknown ifthenpay payment method."
+msgstr ""
+
+#: src/Api/PaymentInitiator.php:121
+msgid "Multibanco is not configured."
+msgstr ""
+
+#: src/Api/PaymentInitiator.php:227
+msgid "Enter a valid Portuguese mobile number."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:103
+msgid "MbWay"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:104
+msgid "Gateway"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:108
+msgid "ifthenpay Gateway Payment methods:"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:109
+msgid "MB WAY phone number"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:110
+msgid "We'll send a payment request to this number."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:111
+msgid "Enter a valid Portuguese mobile number (9 digits, starting with 91, 92, 93 or 96)."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:112
+msgid "Send"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:113
+msgid "Sending payment request…"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:114
+msgid "Something went wrong starting this payment. Please try again."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:115
+msgid "Close"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:116
+msgid "Approve on your phone"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:117
+msgid "We've sent a payment request to your MB WAY app. Open it and approve the payment to finish."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:118
+msgid "We didn't receive your approval in time. If you already approved it, your order will still update automatically once we hear back."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:119
+msgid "Your payment details"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:120
+msgid "This reference has expired."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:121
+msgid "Safe to close this window"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:122
+msgid "Pay whenever suits you at an ATM or in your home banking app. We'll confirm your order automatically as soon as the payment arrives."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:123
+msgid "Complete your payment in the window that just opened."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:124
+msgid "Didn't see a new window? Open payment page"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:125
+msgid "Your payment wasn't completed. If you already paid, your order will still update automatically once we hear back."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:126
+msgid "Are you sure you want to cancel the payment?"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:127
+msgid "Yes, cancel"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:128
+msgid "No"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:130
+msgid "Thank you!"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:131
+msgid "Your payment was successful. A receipt is on its way to your inbox."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:132
+msgid "Continue"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:133 src/Frontend/views/instructions.php:86 src/Frontend/views/instructions.php:103
+msgid "Payment not completed"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:134
+msgid "ifthenpay reported this payment as failed. You can try again from checkout."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:135
+msgid "This payment expired before it was confirmed."
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:136 src/Frontend/views/instructions.php:52
+msgid "Entity"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:137 src/Frontend/views/instructions.php:56
+msgid "Reference"
+msgstr ""
+
+#: src/Checkout/CheckoutAssets.php:139 src/Frontend/views/instructions.php:65
+msgid "Expires"
+msgstr ""
+
+#: src/Checkout/PaymentModalController.php:177
+msgid "We couldn't find your order."
+msgstr ""
+
+#: src/Checkout/PaymentModalController.php:187
+msgid "This order has already been paid."
+msgstr ""
+
+#: src/Checkout/PaymentModalController.php:197
+msgid "ifthenpay cannot be used for subscription orders."
+msgstr ""
+
+#: src/Frontend/views/instructions.php:21
+msgid "ifthenpay Order"
+msgstr ""
+
+#: src/Frontend/views/instructions.php:43
+msgid "This Multibanco reference has expired. Please place a new order to complete your payment."
+msgstr ""
+
+#: src/Frontend/views/instructions.php:47
+msgid "We couldn't generate your Multibanco reference. Please contact us for assistance."
+msgstr ""
+
+#: src/Frontend/views/instructions.php:71
+msgid "Pay at any ATM or by home banking app. Your order updates automatically once we receive payment."
+msgstr ""
+
+#: src/Frontend/views/instructions.php:83
+msgid "Request failed"
+msgstr ""
+
+#: src/Frontend/views/instructions.php:84
+msgid "We couldn't send the MB WAY request. Please contact us for assistance."
+msgstr ""
+
+#: src/Frontend/views/instructions.php:87
+msgid "You didn't approve the MB WAY request in time. Create a new payment to retry again!"
+msgstr ""
+
+#: src/Frontend/views/instructions.php:89
+msgid "Waiting for confirmation"
+msgstr ""
+
+#: src/Frontend/views/instructions.php:90
+msgid "Check your phone and approve the MB WAY payment request."
+msgstr ""
+
+#: src/Frontend/views/instructions.php:104
+msgid "Your payment was cancelled or didn't complete. Contact us if you'd still like to complete this payment."
+msgstr ""
+
+#: src/Frontend/views/instructions.php:106
+msgid "Processing"
+msgstr ""
+
+#: src/Frontend/views/instructions.php:107
+msgid "Your payment is still pending! It will be marked as paid as soon as we receive it."
+msgstr ""
+
+#: src/Frontend/views/instructions.php:110
+msgid "Haven't paid yet? You can still complete it below."
+msgstr ""
+
+#: src/Frontend/views/instructions.php:113
+msgid "Complete your payment"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "ifthenpay | Payments for SureCart"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/ifthenpay/ifthenpay-payments-for-surecart"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "SureCart integration for payments with the ifthenpay gateway: Multibanco reference, MB WAY and ifthenpay Gateway (cards, Apple Pay, Google Pay)."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "ifthenpay"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://ifthenpay.com/"
+msgstr ""
+
