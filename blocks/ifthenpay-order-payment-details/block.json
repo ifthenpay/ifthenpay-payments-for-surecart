@@ -1,0 +1,14 @@
+{
+	"apiVersion": 3,
+	"name": "ifthenpay-surecart/ifthenpay-order-payment-details",
+	"title": "ifthenpay Payment Details",
+	"description": "Shows the ifthenpay payment details (Multibanco entity/reference, MB WAY/ifthenpay Gateway status, etc.) for the order the customer is currently viewing on their single-order page.",
+	"category": "surecart-customer-dashboard",
+	"keywords": [ "ifthenpay", "order", "payment", "dashboard" ],
+	"textdomain": "ifthenpay-payments-for-surecart",
+	"supports": {
+		"reusable": false,
+		"html": false
+	},
+	"editorScript": "iftp-sc-order-payment-details-editor"
+}

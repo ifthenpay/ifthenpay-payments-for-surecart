@@ -1,0 +1,26 @@
+# ==========================================
+# Generic WordPress Plugin .gitignore
+# ==========================================
+
+# Composer
+/vendor/
+
+# Node / frontend
+/node_modules/
+/dist/
+/build/
+
+# IDE / OS
+.vscode/
+.idea/
+*.log
+.DS_Store
+Thumbs.db
+
+# PHPUnit or other local config
+phpunit.xml
+phpunit.xml.dist
+/tests/.wp-core
+
+# Misc cache
+*.cache

@@ -1,0 +1,173 @@
+/*
+ * The `.iftp-sc-toggle-summary*`/`.iftp-sc-pbl-methods*` rules used to live
+ * here, but they only ever style content `checkout.js` creates at runtime —
+ * on at least one real install this external stylesheet never actually made
+ * it into the page (a cache/optimization plugin's "remove unused CSS" pass
+ * most likely, since it can only see classes present in the initial
+ * server-rendered markup, never ones a script adds afterwards). Rather than
+ * depend on this file loading for JS-created content, `checkout.js` now
+ * injects those same rules itself via its own `<style>` tag
+ * (`injectIconStyles()`) — see that file. This one stays for the
+ * order-confirmation page below, whose markup *is* server-rendered.
+ */
+
+/*
+ * Same icon font `admin.css` uses for `.iftp-sc-icon-logo` — needed again
+ * here (not shared across the two stylesheets) because this one loads on the
+ * customer-facing order-confirmation page, never alongside admin.css.
+ */
+@font-face {
+	font-family: ifthenpay-icons;
+	src: url( '../fonts/ifthenpay-icons.woff2' ) format( 'woff2' ),
+		url( '../fonts/ifthenpay-icons.woff' ) format( 'woff' ),
+		url( '../fonts/ifthenpay-icons.ttf' ) format( 'truetype' );
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+/* Payment instructions module on the order-confirmation page. */
+.iftp-sc-instructions__method {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: var( --sc-spacing-medium, 16px );
+	padding-bottom: var( --sc-spacing-medium, 16px );
+	border-bottom: 1px solid var( --sc-color-gray-200, #e5e7eb );
+}
+
+/*
+ * A bordered chip behind the icon — mirrors `.iftp-sc-connection-card__icon`
+ * in the admin screen's own CSS — gives the method icon a consistent frame
+ * regardless of whether it's a real brand mark (arbitrary aspect ratio) or
+ * the fallback glyph, instead of a bare image floating next to the label.
+ */
+.iftp-sc-instructions__method-icon-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 40px;
+	height: 40px;
+	flex: 0 0 auto;
+	padding: 0 4px;
+	box-sizing: border-box;
+	border-radius: var( --sc-border-radius-medium, 8px );
+}
+
+/*
+ * `width: auto` lets combo brand logos (e.g. `ccard.png`, Visa+Mastercard
+ * side by side) render at their natural, much wider aspect ratio instead of
+ * being squashed square — `.method-icon-wrap` above grows with it (`flex: 0
+ * 0 auto`) rather than clipping it, since a fixed 40px frame only fits
+ * square-ish single-brand icons like mbway's or Multibanco's.
+ */
+.iftp-sc-instructions__method-icon {
+	height: 30px;
+	width: auto;
+	max-width: 100px;
+	object-fit: contain;
+}
+
+/*
+ * Shown instead of `.iftp-sc-instructions__method-icon` when no real brand
+ * icon is cached yet for this method — see `instructions.php`. Only ever
+ * appears for a not-yet-paid entry (once paid, `mtd` is known and the real
+ * brand icon renders instead), so it uses ifthenpay's own brand blue rather
+ * than SureCart's green, matching the same fallback glyph on the admin
+ * Entries tab (`.iftp-sc-entries-icon-link` in admin.css).
+ */
+.iftp-sc-instructions__method-icon--fallback {
+	font-family: ifthenpay-icons;
+	font-weight: 100;
+	font-style: normal;
+	font-size: 20px;
+	line-height: 1;
+	display: inline-block;
+	color: #00609c;
+}
+
+.iftp-sc-instructions__method-icon--fallback::before {
+	content: "\e002";
+}
+
+.iftp-sc-instructions__method-label {
+	font-weight: var( --sc-font-weight-bold, 600 );
+	color: var( --sc-color-gray-900, #111827 );
+	flex: 1;
+	min-width: 0;
+}
+
+.iftp-sc-instructions__method-tag {
+	flex: 0 0 auto;
+}
+
+.iftp-sc-instructions__list {
+	margin: 0;
+}
+
+.iftp-sc-instructions__row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: var( --sc-spacing-x-small, 6px ) 0;
+	border-bottom: 1px solid var( --sc-color-gray-200, #e5e7eb );
+}
+
+.iftp-sc-instructions__row:last-child {
+	border-bottom: none;
+}
+
+.iftp-sc-instructions__row dt {
+	color: var( --sc-color-gray-600, #6b7280 );
+}
+
+.iftp-sc-instructions__row dd {
+	margin: 0;
+	font-weight: var( --sc-font-weight-bold, 600 );
+	font-family: var( --sc-font-mono, ui-monospace, monospace );
+	color: #4d5765;
+}
+
+.iftp-sc-instructions__note {
+	margin-top: var( --sc-spacing-small, 8px );
+}
+
+/*
+ * Status box (MB WAY waiting/failed and ifthenpay Gateway pending/failed) —
+ * a tinted, bordered block instead of bare text so "still waiting" vs.
+ * "didn't go through" read as distinct states at a glance, not just via the
+ * small `sc-tag` pill.
+ */
+.iftp-sc-mbway-status {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var( --sc-spacing-small, 8px );
+	padding: var( --sc-spacing-medium, 14px ) var( --sc-spacing-medium, 16px );
+	border-radius: var( --sc-border-radius-medium, 8px );
+}
+
+.iftp-sc-mbway-status--failed,
+.iftp-sc-mbway-status--cancelled,
+.iftp-sc-mbway-status--expired {
+	background: #fef2f2;
+	border-color: #fecaca;
+}
+
+.iftp-sc-mbway-status__message {
+	margin: 0;
+}
+
+.iftp-sc-mbway-status__spinner {
+	align-self: center;
+}
+
+.iftp-sc-mbway-status__action {
+	align-self: stretch;
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.iftp-sc-mbway-status__spinner {
+		animation: none !important;
+	}
+}

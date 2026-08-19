@@ -1,0 +1,1112 @@
+/*
+ * This page borrows SureCart's own design tokens and component classes
+ * (enqueued from `dist/components/surecart/surecart.css` as the
+ * `surecart-themes-default` handle — see Admin\SettingsPage::maybe_enqueue_assets())
+ * so it matches admin.php?page=sc-settings instead of inventing its own
+ * look. Class names below (`.form-control`, `.input`, `.input__control`,
+ * `.select`, etc.) are copied verbatim from SureCart's compiled component
+ * stylesheets — see the individual rule comments for the source file.
+ */
+
+@font-face {
+	font-family: ifthenpay-icons;
+	src: url( '../fonts/ifthenpay-icons.woff2' ) format( 'woff2' ),
+		url( '../fonts/ifthenpay-icons.woff' ) format( 'woff' ),
+		url( '../fonts/ifthenpay-icons.ttf' ) format( 'truetype' );
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+.iftp-sc-icon-logo {
+	font-family: ifthenpay-icons !important;
+	font-weight: 100 !important;
+	font-style: normal !important;
+	font-size: 22px !important;
+	line-height: 1 !important;
+	display: inline-block !important;
+	color: var( --sc-color-primary-500, #388051 ) !important;
+}
+
+.iftp-sc-icon-logo::before {
+	content: "\e002";
+}
+
+/*
+ * Generic ifthenpay glyph — swapped in for SureCart's own `<sc-icon
+ * name="link">` wherever it stood in for "no specific method known yet"
+ * (see `render_method_icon()`). Unlike `.iftp-sc-icon-logo` above, this has
+ * no fixed size/color: callers set `font-size` inline per context and let
+ * `color` inherit from whatever wrapper they're already in, so it reads
+ * exactly like the `sc-icon` it replaced in every spot except the ifthenpay
+ * Orders table (see `.iftp-sc-entries-icon-link` below).
+ */
+.iftp-sc-icon--ifthenpay {
+	font-family: ifthenpay-icons !important;
+	font-weight: 100 !important;
+	font-style: normal !important;
+	line-height: 1 !important;
+	display: inline-block !important;
+}
+
+.iftp-sc-icon--ifthenpay::before {
+	content: "\e002";
+}
+
+/*
+ * ifthenpay Orders (Entries) tab only — brand blue instead of the gray every
+ * other `.iftp-sc-icon--ifthenpay` usage inherits from its wrapper (nav tab,
+ * Methods table, connection card, page header all stay gray/unchanged).
+ */
+.iftp-sc-entries-icon-link {
+	color: #00609c !important;
+	font-size: 26px !important;
+}
+
+/*
+ * Left nav only — the ifthenpay glyph's own advance width (a font character,
+ * unlike `sc-icon`'s fixed 18x18 SVG box every other tab uses) is narrower
+ * than 18px, so the "ifthenpay Gateway" tab's icon+label pair sat visibly
+ * left of every other tab's. Nudges just that pair back into alignment
+ * instead of resizing the glyph itself.
+ */
+.iftp-sc-nav-icon--ifthenpay {
+	margin-left: 5px !important;
+}
+
+/*
+ * Prevents a flash of unstyled content while SureCart's Stencil components
+ * upgrade — copied from SureCart's own
+ * `views/layouts/partials/admin-settings-styles.php` (visible in any
+ * server-rendered SureCart admin page as inline <style>), extended with the
+ * extra tags this page also uses (`sc-flex`, `sc-alert`).
+ */
+sc-tab, sc-icon, sc-breadcrumbs, sc-breadcrumb, sc-button, sc-card, sc-tag, sc-flex, sc-alert, sc-dashboard-module {
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 0.2s ease-in-out;
+}
+sc-tab.hydrated,
+sc-icon.hydrated,
+sc-breadcrumbs.hydrated,
+sc-breadcrumb.hydrated,
+sc-button.hydrated,
+sc-card.hydrated,
+sc-tag.hydrated,
+sc-flex.hydrated,
+sc-alert.hydrated,
+sc-dashboard-module.hydrated {
+	visibility: inherit;
+	opacity: 1;
+}
+
+sc-icon {
+	width: 18px !important;
+	height: 18px !important;
+}
+
+/*
+ * wp-admin's own chrome (`#wpcontent { padding-left: 20px }`,
+ * `.wrap { margin: 10px 20px 0 2px }`) fights our full-bleed header/sidebar
+ * layout — this stylesheet only loads on our own screen
+ * (SettingsPage::is_our_screen()), so resetting these globally here is safe.
+ */
+#wpcontent {
+	padding-left: 0 !important;
+	background: #f4f7f9 !important;
+}
+
+.wrap.iftp-sc-settings {
+	margin: 0 !important;
+	color: var( --sc-color-gray-700, #374151 ) !important;
+}
+
+/*
+ * SureCart's own --sc-color-primary-500 (the token sc-button[type="primary"],
+ * the toggle switches, and input focus rings all read, including through
+ * shadow DOM — custom properties inherit across shadow boundaries even
+ * though :host encapsulation blocks everything else) resolves through
+ * --sc-color-primary/-saturation/-luminance to hue 217 (SureCart's own
+ * blue), not their #388051 brand green used elsewhere on this page (the
+ * ifthenpay logo icon, the tab-active color below). Re-deriving the same
+ * HSL chain from #388051 here keeps shades SureCart doesn't hardcode
+ * (-100 hover tints, etc.) consistent.
+ *
+ * SureCart's StylesService::register() (always runs, every admin page)
+ * additionally injects an inline `:root { --sc-color-primary-500: #<brand
+ * color> }` — a flat literal, not derived from the vars above — so it wins
+ * over the HSL chain for -500, the focus ring, and the input focus border
+ * regardless of source order. Only !important on the same properties beats
+ * that, so those three are set directly here rather than through the chain.
+ */
+.wrap.iftp-sc-settings {
+	--sc-color-primary: 141;
+	--sc-color-primary-saturation: 39%;
+	--sc-color-primary-luminance: 36%;
+	--sc-color-primary-500: #388051 !important;
+	--sc-focus-ring-color-primary: rgba( 56, 128, 81, 0.15 ) !important;
+	--sc-input-border-color-focus: #388051 !important;
+}
+
+/* Header — matches SureCart's own #sc-settings-header structure/classes */
+
+.sc-settings-header-container {
+	background: #fff !important;
+	border-bottom: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+}
+
+#sc-settings-header {
+	display: flex !important;
+	align-items: center !important;
+	flex-wrap: wrap !important;
+	justify-content: space-between !important;
+	gap: 1.2em !important;
+	padding: 15px 20px !important;
+}
+
+#sc-settings-header sc-breadcrumbs {
+	display: flex !important;
+	align-items: center !important;
+	gap: var( --sc-spacing-small, 8px ) !important;
+}
+
+#sc-settings-header sc-flex {
+	display: flex !important;
+	align-items: center !important;
+	gap: var( --sc-spacing-medium, 16px ) !important;
+}
+
+.iftp-settings-header__logo {
+	width: 179px !important;
+	height: 32px !important;
+	object-fit: contain !important;
+	object-position: left center !important;
+}
+
+.iftp-settings-header__logo-navbar{
+	width: auto !important;
+	height: 15px !important;
+	object-fit: contain !important;
+	object-position: left bottom !important;
+	padding-top: 10px !important;
+}
+
+/*
+ * Layout — matches SureCart's own #sc-settings-content / #sc-nav structure:
+ * a white, bordered nav column running the full height of the content area
+ * (not just its own intrinsic height — `align-items: stretch`, the flex
+ * default, makes it match its tallest sibling) sitting over the page's own
+ * gray background, exactly like admin.php?page=sc-settings.
+ */
+
+.iftp-sc-layout {
+	display: flex !important;
+	align-items: stretch !important;
+	gap: 0 !important;
+	padding: 0 !important;
+	min-height: calc( 100vh - 98px ) !important;
+	background: #f4f7f9 !important;
+	box-sizing: border-box !important;
+}
+
+#sc-nav {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 2px !important;
+	width: 100% !important;
+	max-width: 290px !important;
+	flex: 0 0 290px !important;
+	box-sizing: border-box !important;
+	background: #fff !important;
+	border-right: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+	padding: 20px !important;
+}
+
+/*
+ * sc-tab renders with real shadow DOM (`encapsulation: "shadow"` in
+ * sc-tab.js), so a plain `.tab:hover`/`.tab.tab--active` rule in this
+ * stylesheet can never reach its internals — only CSS custom properties
+ * cross the shadow boundary. sc-tab.css reads both
+ * `color: var(--sc-tab-active-color, var(--sc-color-gray-900))` and
+ * `background-color: var(--sc-tab-active-background, var(--sc-color-gray-100))`
+ * for `.tab--active`/`:hover`; setting `background-color` directly here (as
+ * a previous pass tried) targets the light-DOM <sc-tab> host, not the
+ * shadow-internal `.tab` element that actually paints it, so it did
+ * nothing (and `none` isn't even a valid `background-color` value). Only
+ * the custom property reaches through.
+ */
+#sc-nav sc-tab {
+	--sc-tab-active-color: #388051;
+	--sc-tab-active-background: transparent;
+	/*
+	 * `.tab`'s own (non-active/non-hover) label color reads
+	 * `color: var(--sc-color-gray-600)` — overriding that token here, scoped
+	 * to this element, only affects that one usage inside sc-tab's own shadow
+	 * tree (nothing else references `--sc-color-gray-600` there). Doing it
+	 * this way, instead of via `::part(base)` below, leaves the
+	 * `.tab--active`/`:hover` swap to `--sc-tab-active-color` above untouched
+	 * — a blanket `::part(base) { color: ... !important }` would also
+	 * override that active/hover state, since `::part()` rules win over the
+	 * shadow tree's own internal rules.
+	 */
+	--sc-color-gray-600: #45505f;
+}
+
+/*
+ * `.tab` (sc-tab.css) reads `font-weight: var(--sc-font-weight-semibold)`,
+ * which is a custom property and would cross the shadow boundary — but
+ * SureCart's own admin.php?page=sc-settings nav doesn't lighten its tabs by
+ * overriding that token (it'd also lighten every other semibold-weight
+ * component on the page). Instead it targets just the tab via `::part(base)`
+ * (StylesService::addInlineBrandColors(), `sc-tab::part(base) {
+ * font-weight: 400; }`) — the `part="base"` attribute sc-tab.js puts on its
+ * root element for exactly this. Mirrored here, scoped to our own nav.
+ *
+ * `font-size`/`font-family` are added the same way — both are stateless
+ * (unlike `color`, `.tab--active`/`:hover` never override them), so setting
+ * them unconditionally on the exposed `base` part is safe.
+ */
+#sc-nav sc-tab::part( base ) {
+	font-weight: 400 !important;
+	font-size: 14px !important;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+}
+
+@media screen and ( max-width: 782px ) {
+	.iftp-sc-layout {
+		flex-direction: column !important;
+		min-height: 0 !important;
+	}
+
+	#sc-nav {
+		max-width: none !important;
+		flex: 0 0 auto !important;
+		flex-direction: row !important;
+		flex-wrap: wrap !important;
+		border-right: none !important;
+		border-bottom: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+	}
+}
+
+/* Card (gated "connect your account" screen only — see .iftp-sc-tab-content below for connected tabs) */
+
+.iftp-sc-admin-card {
+	display: block !important;
+	flex: 1 !important;
+	min-width: 0 !important;
+	max-width: 720px !important;
+	/* Top gets the screen's own +10px, same as `.iftp-sc-tab-content` — see
+	 * its comment for why that lives here and not on `.iftp-sc-layout`. */
+	margin: calc( var( --sc-spacing-large, 20px ) + 10px ) auto var( --sc-spacing-large, 20px ) !important;
+	padding: var( --sc-spacing-large, 20px ) !important;
+}
+
+/*
+ * Connected-tab content container — same outer layout (width/centering/
+ * spacing) as .iftp-sc-admin-card above, but a plain <div> rather than an
+ * <sc-card>: each tab now renders its own boxed <sc-dashboard-module>/<sc-card>
+ * sections internally (mirroring admin.php?page=sc-settings's own Store
+ * Settings screen), so the tab as a whole shouldn't sit inside one further
+ * enclosing box.
+ */
+.iftp-sc-tab-content {
+	display: block !important;
+	flex: 1 !important;
+	min-width: 0 !important;
+	max-width: 760px !important;
+	/* Top gets the screen's own +10px on top of the usual spacing (kept off
+	 * `.iftp-sc-layout` itself so it doesn't also push `#sc-nav` down —
+	 * `align-items: stretch` there means nav should stay flush with the very
+	 * top of the layout, unaffected by this column's own top spacing). */
+	margin: calc( var( --sc-spacing-large, 20px ) + 10px ) auto var( --sc-spacing-large, 20px ) !important;
+	/* 10px narrower each side than before, to read closer to SureCart's own
+	 * "Store Settings" content width. */
+	padding: 0 10px !important;
+	box-sizing: border-box !important;
+}
+
+/*
+ * ifthenpay Orders (Entries) tab only — its table has 7 columns and reads
+ * cramped at the same 760px cap every other tab's single-column form uses,
+ * so this variant widens the cap instead. `sc-card`/`sc-dashboard-module`
+ * are Stencil components with their own internal (shadow-DOM) sizing that
+ * defaults to `min-width: auto` like any other flex/grid item — without an
+ * explicit `min-width: 0` here they'd refuse to shrink back down below their
+ * content's natural width on a narrower viewport, pushing the whole card
+ * wider than `.iftp-sc-tab-content` and exposing the page's gray background
+ * behind/before it instead of the table scrolling inside its own box.
+ * `.iftp-sc-table-scroll` (below) is the actual overflow boundary — this
+ * `min-width: 0` is what lets that boundary take effect at all.
+ */
+.iftp-sc-tab-content--wide {
+	max-width: 1160px !important;
+}
+
+.iftp-sc-tab-content--wide sc-dashboard-module,
+.iftp-sc-tab-content--wide sc-card {
+	min-width: 0 !important;
+}
+
+/* Lets a too-wide table scroll horizontally inside its own card instead of overflowing it. */
+.iftp-sc-table-scroll {
+	min-width: 0 !important;
+	overflow-x: auto !important;
+}
+
+/*
+ * Page header — icon + title outside any box, with a Save button (mirrors
+ * SureCart's own Store Settings header: `.css-6zq5xv` title row +
+ * `sc-button[submit]`), separated from the modules below by a rule line.
+ *
+ * Values below (padding-bottom, margin-bottom, and the whole title rule)
+ * are copied verbatim from that header's own computed styles rather than
+ * approximated from the `--sc-spacing-*`/`--sc-font-size-*` scale — it's a
+ * hardcoded React/Emotion component, not built from those Stencil design
+ * tokens, so no token on the scale actually equals its real values (e.g.
+ * `1.1rem` title size sits between `--sc-font-size-medium` and
+ * `-large`), and reusing the closest token instead of the real value was
+ * why this previously read a shade off in size/weight/spacing.
+ */
+.iftp-sc-page-header {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: space-between !important;
+	padding-bottom: 1rem !important;
+	margin-bottom: 2rem !important;
+	border-bottom: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+}
+
+.iftp-sc-page-header__title {
+	display: flex !important;
+	align-items: center !important;
+	gap: 0.5em !important;
+	margin: 0 !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+	font-family: var( --sc-font-sans ) !important;
+	font-size: 1.1rem !important;
+	line-height: 1.75rem !important;
+	font-weight: var( --sc-font-weight-bold, 600 ) !important;
+	color: var( --sc-color-brand-heading, #002e33 ) !important;
+}
+
+/* Modules — vertical stack of <sc-dashboard-module> sections within a tab. */
+.iftp-sc-modules {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: var( --sc-spacing-large, 24px ) !important;
+}
+
+/*
+ * <sc-dashboard-module> renders its `heading`/`description` in shadow DOM
+ * (`.heading__title`/`.heading__description`, neither with their own
+ * explicit `color`), so they inherit `color` from this host element rather
+ * than any class of ours reaching through the shadow boundary. Without this,
+ * wp-admin's own default text color wins on the host instead. The real
+ * `admin.php?page=sc-settings` "Store Details"-style modules render both the
+ * heading and description in `--sc-color-brand-body` (#45505f) — the
+ * description then dims further via that same component's own
+ * `.heading__description { opacity: 0.85; }`, not a separate lighter color.
+ */
+sc-dashboard-module {
+	color: var( --sc-color-brand-body, #45505f ) !important;
+}
+
+/* Section headings */
+
+.iftp-sc-section-title {
+	margin: var( --sc-spacing-large, 24px ) 0 var( --sc-spacing-x-small, 4px ) !important;
+	padding-top: var( --sc-spacing-large, 24px ) !important;
+	border-top: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+	font-family: var( --sc-font-sans ) !important;
+	font-size: var( --sc-font-size-medium, 15px ) !important;
+	font-weight: var( --sc-font-weight-semibold, 600 ) !important;
+	color: var( --sc-color-gray-900, #111827 ) !important;
+}
+
+.iftp-sc-section-title--tight {
+	margin-top: 0 !important;
+	padding-top: 0 !important;
+	border-top: none !important;
+}
+
+.iftp-sc-form__actions {
+	margin-top: var( --sc-spacing-large, 24px ) !important;
+	display: flex !important;
+	align-items: center !important;
+	gap: var( --sc-spacing-medium, 16px ) !important;
+}
+
+.iftp-sc-field__help {
+	margin: 0 !important;
+	font-size: var( --sc-input-help-text-font-size-medium, 12px ) !important;
+	color: var( --sc-input-help-text-color, var( --sc-color-gray-600, #6b7280 ) ) !important;
+}
+
+/*
+ * MB WAY/Multibanco tabs' account picker (`render_account_picker()`) — the
+ * method's own real brand symbol (`mbway_only_icon.svg`/
+ * `multibanco_only_icon.svg`) next to the field, so the connection reads as
+ * that specific method rather than a plain generic dropdown.
+ */
+.iftp-sc-account-picker {
+	display: flex !important;
+	align-items: center !important;
+	gap: var( --sc-spacing-medium, 16px ) !important;
+}
+
+.iftp-sc-account-picker__icon {
+	display: block !important;
+	height: 28px !important;
+	width: auto !important;
+	flex: 0 0 auto !important;
+}
+
+.iftp-sc-account-picker__field {
+	flex: 1 !important;
+	min-width: 0 !important;
+}
+
+/*
+ * Native <label>/<input>/help-text markup rendered by render_text_field()
+ * already uses SureCart's own class names (`.form-control`, `.input`,
+ * `.input__control`, `.form-control__help-text` — copied from
+ * `dist/components/collection/components/ui/{form-control,input}/*.css`),
+ * but wp-admin's own `.wp-core-ui input[type="text"]` rule has higher
+ * specificity than a single class and was winning, leaving plain unstyled
+ * black-on-white inputs. Restated explicitly here with !important so our
+ * tokens always win regardless of load order.
+ */
+.form-control {
+	display: block !important;
+	margin-bottom: var( --sc-spacing-medium, 16px ) !important;
+}
+
+/*
+ * Values here match the real tokens `sc-form-control.css` reads on
+ * `.form-control__label` (`--sc-input-label-font-size-medium`,
+ * `--sc-input-label-font-weight`, `--sc-input-label-color`) — a previous pass
+ * used approximated stand-ins (`--sc-font-size-small`, `--sc-color-gray-700`)
+ * that happened to be valid tokens but not the ones the real component
+ * actually uses, so labels rendered a size smaller and a shade darker than
+ * SureCart's own "Store Settings" screen.
+ */
+.form-control__label {
+	display: block !important;
+	margin-bottom: var( --sc-spacing-x-small, 6px ) !important;
+	font-family: var( --sc-font-sans ) !important;
+	font-size: var( --sc-input-label-font-size-medium, 1em ) !important;
+	font-weight: var( --sc-input-label-font-weight, 500 ) !important;
+	color: var( --sc-input-label-color, #4b5563 ) !important;
+}
+
+.form-control__help-text {
+	margin: var( --sc-spacing-xx-small, 4px ) 0 0 !important;
+	font-family: var( --sc-font-sans ) !important;
+	font-size: var( --sc-input-help-text-font-size-medium, 12px ) !important;
+	color: var( --sc-input-help-text-color, var( --sc-color-gray-500, #6b7280 ) ) !important;
+}
+
+.input {
+	display: flex !important;
+	align-items: center !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	box-sizing: border-box !important;
+	background-color: var( --sc-input-background-color, #fff ) !important;
+	border: var( --sc-input-border-width, 1px ) solid var( --sc-input-border-color, var( --sc-color-gray-300, #d1d5db ) ) !important;
+	border-radius: var( --sc-input-border-radius-medium, 8px ) !important;
+	/* Real `sc-input.css` sets this ambient shadow unconditionally (not just
+	 * on focus, which `.input:focus-within` below already overrides with a
+	 * stronger focus ring) — without it, our inputs read visibly flatter
+	 * than SureCart's own. */
+	box-shadow: var( --sc-input-box-shadow, 0 1px 2px rgba( 0, 0, 0, 0.05 ) ) !important;
+	transition: border 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.input--medium {
+	min-height: var( --sc-input-height-medium, 40px ) !important;
+}
+
+.input:focus-within {
+	border-color: var( --sc-input-border-color-focus, var( --sc-color-primary-500, #388051 ) ) !important;
+	box-shadow: 0 0 0 var( --sc-focus-ring-width, 3px ) var( --sc-focus-ring-color-primary, rgba( 56, 128, 81, 0.15 ) ) !important;
+}
+
+.input__control {
+	flex: 1 !important;
+	width: 100% !important;
+	min-width: 0 !important;
+	border: none !important;
+	outline: none !important;
+	background: transparent !important;
+	padding: 0 var( --sc-spacing-medium, 14px ) !important;
+	font-family: var( --sc-input-font-family, var( --sc-font-sans ) ) !important;
+	font-size: var( --sc-input-font-size-medium, 14px ) !important;
+	color: var( --sc-input-color, var( --sc-color-gray-700, #374151 ) ) !important;
+	appearance: none !important;
+	-webkit-appearance: none !important;
+}
+
+.input__control::placeholder {
+	color: var( --sc-color-gray-400, #9ca3af ) !important;
+}
+
+/* Narrow numeric fields (e.g. Expiry days) don't need to stretch full width. */
+.form-control--narrow {
+	max-width: 160px !important;
+}
+
+/*
+ * Select — a real native <select>, styled to match the `.trigger` box from
+ * `dist/components/collection/components/ui/select/sc-select.css` (sc-select
+ * itself has no formAssociated support, so it can't submit via a plain form).
+ */
+.iftp-sc-select {
+	display: block !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	box-sizing: border-box !important;
+	appearance: none !important;
+	-webkit-appearance: none !important;
+	-moz-appearance: none !important;
+	font-family: var( --sc-input-font-family ) !important;
+	font-size: var( --sc-button-font-size-medium ) !important;
+	color: var( --sc-input-color ) !important;
+	background-color: var( --sc-select-background-color, var( --sc-color-white, #fff ) ) !important;
+	/* Kill WP core's own `.wp-core-ui select` Dashicon chevron background-image so it doesn't double up with `.iftp-sc-select__caret` below. */
+	background-image: none !important;
+	border: var( --sc-input-border-width, 1px ) solid var( --sc-select-border-color, var( --sc-color-gray-300, #d1d5db ) ) !important;
+	border-radius: var( --sc-input-border-radius-medium ) !important;
+	min-height: var( --sc-input-height-medium ) !important;
+	padding: 0 var( --sc-spacing-large, 36px ) 0 var( --sc-spacing-medium ) !important;
+	transition: var( --sc-input-transition, var( --sc-transition-medium ) ) border, var( --sc-input-transition, var( --sc-transition-medium ) ) box-shadow !important;
+}
+
+.iftp-sc-select:focus {
+	outline: none !important;
+	border-color: var( --sc-input-border-color-focus ) !important;
+	box-shadow: 0 0 0 var( --sc-focus-ring-width, 3px ) var( --sc-focus-ring-color-primary ) !important;
+}
+
+/*
+ * A real native <select> has no cross-browser-stylable arrow, so the
+ * native one is switched off above and this decorative sc-icon takes its
+ * place — copying SureCart's own `sc-select.css`:
+ *   .select__caret { transition: transform 0.25s ease; }
+ *   .select--is-open .select__caret { transform: rotate(180deg); }
+ * `<select>` has no `open`/`closed` DOM state to key off, so `:focus-within`
+ * on the wrapper is the closest available approximation (true while the
+ * native dropdown is showing, on every browser).
+ */
+.iftp-sc-select-wrap {
+	position: relative !important;
+	display: block !important;
+	width: 100% !important;
+}
+
+.iftp-sc-select__caret {
+	position: absolute !important;
+	top: 50% !important;
+	right: var( --sc-spacing-small, 12px ) !important;
+	transform: translateY( -50% ) !important;
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+	pointer-events: none !important;
+	transition: transform 0.25s ease !important;
+}
+
+.iftp-sc-select-wrap:focus-within .iftp-sc-select__caret {
+	transform: translateY( -50% ) rotate( 180deg ) !important;
+}
+
+/*
+ * Toggle switch — used for the Methods tab's per-method activation column
+ * and the ifthenpay Gateway methods table's Enabled column. A checkbox in a data
+ * table reads as static and easy to miss; a switch reads as something you
+ * flip. Pure CSS (adjacent-sibling selector), no JS, so it stays a real
+ * native checkbox underneath and submits like any other form field.
+ */
+.iftp-sc-switch {
+	position: relative !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	cursor: pointer !important;
+}
+
+.iftp-sc-switch input {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	margin: 0 !important;
+	opacity: 0 !important;
+}
+
+.iftp-sc-switch__track {
+	display: inline-block !important;
+	width: 36px !important;
+	height: 20px !important;
+	background: var( --sc-color-gray-300, #d1d5db ) !important;
+	border-radius: 999px !important;
+	position: relative !important;
+	transition: background 0.15s ease !important;
+}
+
+.iftp-sc-switch__thumb {
+	position: absolute !important;
+	top: 2px !important;
+	left: 2px !important;
+	width: 16px !important;
+	height: 16px !important;
+	background: #fff !important;
+	border-radius: 50% !important;
+	box-shadow: 0 1px 2px rgba( 0, 0, 0, 0.25 ) !important;
+	transition: transform 0.15s ease !important;
+}
+
+.iftp-sc-switch input:checked + .iftp-sc-switch__track {
+	background: var( --sc-color-primary-500, #388051 ) !important;
+}
+
+.iftp-sc-switch input:checked + .iftp-sc-switch__track .iftp-sc-switch__thumb {
+	transform: translateX( 16px ) !important;
+}
+
+.iftp-sc-switch input:disabled + .iftp-sc-switch__track {
+	background: var( --sc-color-gray-200, #e5e7eb ) !important;
+}
+
+.iftp-sc-switch input:disabled {
+	cursor: not-allowed !important;
+}
+
+.iftp-sc-switch--disabled {
+	cursor: not-allowed !important;
+}
+
+/* Connection card (ifthenpay Gateway, Stage 2 — replaces the Backoffice Key row) */
+
+.iftp-sc-connection-card {
+	display: flex !important;
+	align-items: center !important;
+	gap: var( --sc-spacing-medium, 16px ) !important;
+	margin-bottom: var( --sc-spacing-large, 24px ) !important;
+	padding: var( --sc-spacing-medium, 16px ) var( --sc-spacing-large, 20px ) !important;
+	background: #fff !important;
+	border: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+	border-radius: var( --sc-border-radius-large, 10px ) !important;
+	/* `--sc-shadow-small` is the same token real `<sc-card>` uses — a prior,
+	 * hand-invented rgba(16,24,40,0.04) here was much fainter (~4% vs ~10%
+	 * opacity) than SureCart's own card shadow, reading noticeably flatter. */
+	box-shadow: var( --sc-shadow-small, 0 1px 2px rgba( 13, 19, 30, 0.1 ) ) !important;
+}
+
+.iftp-sc-connection-card__icon {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 36px !important;
+	height: 36px !important;
+	flex: 0 0 36px !important;
+	border-radius: var( --sc-border-radius-medium, 8px ) !important;
+	background: var( --sc-color-gray-100, #f3f4f6 ) !important;
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+	box-shadow: 0 1px 2px rgba( 0, 0, 0, 0.06 ) !important;
+}
+
+.iftp-sc-connection-card__body {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 2px !important;
+	flex: 1 !important;
+	min-width: 0 !important;
+}
+
+.iftp-sc-connection-card__eyebrow {
+	font-size: var( --sc-font-size-x-small, 11px ) !important;
+	font-weight: var( --sc-font-weight-semibold, 600 ) !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.04em !important;
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+}
+
+.iftp-sc-connection-card__value {
+	font-family: var( --sc-font-mono, ui-monospace, monospace ) !important;
+	font-size: var( --sc-font-size-medium, 14px ) !important;
+	letter-spacing: 0.02em !important;
+	color: var( --sc-color-gray-900, #111827 ) !important;
+}
+
+.iftp-sc-connection-card__status {
+	display: flex !important;
+	align-items: center !important;
+	flex: 0 0 auto !important;
+	gap: var( --sc-spacing-small, 8px ) !important;
+	padding-left: var( --sc-spacing-medium, 16px ) !important;
+	border-left: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+}
+
+.iftp-sc-connection-card sc-tag {
+	flex: 0 0 auto !important;
+}
+
+.iftp-sc-connection-card sc-button {
+	flex: 0 0 auto !important;
+}
+
+/* Methods table */
+
+.iftp-sc-methods-table {
+	width: 100% !important;
+	border-collapse: separate !important;
+	border-spacing: 0 !important;
+	margin: var( --sc-spacing-small, 8px ) 0 var( --sc-spacing-large, 24px ) !important;
+	font-family: var( --sc-font-sans ) !important;
+	font-size: var( --sc-font-size-medium, 14px ) !important;
+	border: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+	border-radius: var( --sc-border-radius-large, 10px ) !important;
+	overflow: hidden !important;
+	box-shadow: var( --sc-shadow-small, 0 1px 2px rgba( 13, 19, 30, 0.1 ) ) !important;
+}
+
+.iftp-sc-methods-table th {
+	text-align: left !important;
+	padding: var( --sc-spacing-small, 12px ) var( --sc-spacing-medium, 20px ) !important;
+	font-weight: var( --sc-font-weight-semibold, 600 ) !important;
+	font-size: var( --sc-font-size-x-small, 11px ) !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.04em !important;
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+	background: var( --sc-color-gray-50, #f9fafb ) !important;
+	border-bottom: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+}
+
+.iftp-sc-methods-table td {
+	padding: var( --sc-spacing-medium, 16px ) var( --sc-spacing-medium, 20px ) !important;
+	border-bottom: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+	vertical-align: middle !important;
+	background: #fff !important;
+	transition: background 0.1s ease !important;
+}
+
+.iftp-sc-methods-table tbody tr:last-child td {
+	border-bottom: none !important;
+}
+
+.iftp-sc-methods-table tbody tr:hover td {
+	background: var( --sc-color-gray-50, #f9fafb ) !important;
+}
+
+/*
+ * Rows tied to a known SureCart order (see `entry_order_edit_url()`) navigate
+ * to it on click, not just via the Payment ID link — this cursor + stronger
+ * hover tint is the affordance that the whole row, not only the link, is
+ * clickable.
+ */
+.iftp-sc-methods-table__row--clickable {
+	cursor: pointer !important;
+}
+
+.iftp-sc-methods-table__row--clickable:hover td {
+	background: var( --sc-color-gray-100, #f3f4f6 ) !important;
+}
+
+.iftp-sc-methods-table td:first-child {
+	width: 1% !important;
+	white-space: nowrap !important;
+	text-align: center !important;
+}
+
+/*
+ * Payment ID always reads as link text — even on PENDING/FAILED/EXPIRED rows
+ * that have no SureCart order yet to link to — so the column looks and reads
+ * consistently regardless of state (see `render_entry_payment_id()`).
+ */
+.iftp-sc-methods-table__payment-id {
+	color: var( --sc-color-primary-600, #2563eb ) !important;
+	font-weight: var( --sc-font-weight-semibold, 600 ) !important;
+	text-decoration: none !important;
+}
+
+a.iftp-sc-methods-table__payment-id:hover {
+	text-decoration: underline !important;
+}
+
+/*
+ * Icon/logo + label, kept as a flex group with a deliberate gap so the two
+ * read as distinct, separate elements rather than an icon crammed against
+ * text — however wide the logo turns out to be.
+ */
+.iftp-sc-methods-table__method {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: var( --sc-spacing-medium, 16px ) !important;
+}
+
+.iftp-sc-methods-table__method-label {
+	font-weight: var( --sc-font-weight-semibold, 600 ) !important;
+	color: var( --sc-color-gray-900, #111827 ) !important;
+}
+
+.iftp-sc-methods-table__icon {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 40px !important;
+	height: 40px !important;
+	flex: 0 0 40px !important;
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+}
+
+/* Real ifthenpay brand icon (Entries tab Method badge) — square-ish marks (Apple Pay, Google Pay, Multibanco, MB WAY, ...). */
+.iftp-sc-methods-table__icon-img {
+	height: 26px;
+    width: auto;
+    max-width: 100px;
+}
+
+/*
+ * ifthenpay's own `CCARD` catalog image is a combined Visa/Mastercard mark,
+ * a wide rectangle rather than the roughly-square shape every other icon
+ * here has — sizing it like `.iftp-sc-methods-table__icon-img` above would
+ * squeeze it into a near-square box and distort it. The wrapper drops the
+ * fixed 40px box entirely (it can't fit a 60px-wide image) and adds its own
+ * trailing space instead, since it no longer has a fixed-width box centering
+ * it against the label.
+ */
+.iftp-sc-methods-table__icon--wide {
+	width: auto !important;
+	height: auto !important;
+	flex: 0 0 auto !important;
+	padding-right: 10px !important;
+}
+
+.iftp-sc-methods-table__icon-img--wide {
+	width: 60px !important;
+	height: 15px !important;
+}
+
+/*
+ * Method logos come from ifthenpay's own catalog and aren't all the same
+ * aspect ratio — the combined Visa/Mastercard mark in particular renders
+ * roughly 2x as wide as the square Apple Pay/Google Pay/Cofidis icons.
+ * A bordered "chip" box (matching `.iftp-sc-methods-table__icon` above)
+ * gives every logo its own contained, consistent-sized frame — separating
+ * it from the label as a distinct visual unit — while sizing the image
+ * itself by height only (auto width, capped) so the wider Visa/Mastercard
+ * mark scales proportionally instead of being squished into a square.
+ */
+.iftp-sc-methods-table__logo-wrap {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 48px !important;
+	height: 32px !important;
+	flex: 0 0 48px !important;
+	padding: 0 var( --sc-spacing-x-small, 4px ) !important;
+	border-radius: var( --sc-border-radius-medium, 8px ) !important;
+}
+
+.iftp-sc-methods-table__logo {
+	display: inline-block !important;
+	height: 20px !important;
+	width: auto !important;
+	max-width: 100% !important;
+	object-fit: contain !important;
+	vertical-align: middle !important;
+}
+
+.iftp-sc-methods-table__status {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: var( --sc-spacing-small, 8px ) !important;
+}
+
+/*
+ * A method the merchant's Gateway Key doesn't have provisioned yet — kept
+ * visible rather than hidden, faded to read as "off" (a translucent white
+ * scrim over the row) with an "Activate Method" action in place of the
+ * account dropdown, instead of disappearing entirely.
+ */
+.iftp-sc-methods-table__row--unprovisioned td {
+	background: rgba( 255, 255, 255, 0.6 ) !important;
+	opacity: 0.6 !important;
+}
+
+.iftp-sc-methods-table__row--unprovisioned:hover td {
+	background: rgba( 255, 255, 255, 0.6 ) !important;
+}
+
+.iftp-sc-methods-table__not-activated {
+	display: block !important;
+	margin-bottom: var( --sc-spacing-x-small, 4px ) !important;
+	font-size: var( --sc-font-size-small, 13px ) !important;
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+	font-style: italic !important;
+}
+
+.iftp-sc-methods-table__activation-note {
+	font-size: var( --sc-font-size-small, 13px ) !important;
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+	font-style: italic !important;
+}
+
+/*
+ * ifthenpay Orders (Entries) tab filter bar — status/method dropdowns +
+ * search box, all outside the table (see `render_entries_filter_bar()`).
+ * Reuses `render_select_field()`/`render_text_field()`'s own `.form-control`
+ * markup, just laid out horizontally instead of stacked, so no new input
+ * chrome is introduced here — only the row layout and field widths.
+ */
+.iftp-sc-entries-filter-bar {
+	display: flex !important;
+	align-items: flex-end !important;
+	flex-wrap: wrap !important;
+	gap: var( --sc-spacing-medium, 16px ) !important;
+	margin: 0 0 var( --sc-spacing-medium, 16px ) !important;
+}
+
+.iftp-sc-entries-filter-bar .form-control {
+	margin-bottom: 0 !important;
+	flex: 1 1 160px !important;
+	min-width: 160px !important;
+}
+
+.iftp-sc-entries-filter-bar .form-control:has( input[type="search"] ) {
+	flex: 2 1 240px !important;
+}
+
+.iftp-sc-entries-filter-bar__actions {
+	display: flex !important;
+	align-items: center !important;
+	gap: var( --sc-spacing-medium, 16px ) !important;
+	flex: 0 0 auto !important;
+	/* Matches `.input`/`.iftp-sc-select`'s own height so the button row lines
+	 * up with the dropdowns/search box it sits beside (`align-items: flex-end`
+	 * on `.iftp-sc-entries-filter-bar` aligns bottoms, not centers). */
+	height: var( --sc-input-height-medium, 40px ) !important;
+}
+
+.iftp-sc-entries-clear {
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+	font-family: var( --sc-font-sans ) !important;
+	font-size: var( --sc-font-size-small, 13px ) !important;
+	font-weight: var( --sc-font-weight-semibold, 500 ) !important;
+	text-decoration: none !important;
+	white-space: nowrap !important;
+}
+
+.iftp-sc-entries-clear:hover {
+	color: var( --sc-color-gray-900, #111827 ) !important;
+	text-decoration: underline !important;
+}
+
+/*
+ * ifthenpay Orders (Entries) tab pagination — `paginate_links()`'s own
+ * output (`.page-numbers`/`.current`/`.dots`/`.prev`/`.next`), restyled from
+ * plain underlined links into pill buttons matching the rest of the page.
+ */
+.iftp-sc-entries-pagination {
+	margin-top: var( --sc-spacing-medium, 16px ) !important;
+	display: flex !important;
+	align-items: center !important;
+	flex-wrap: wrap !important;
+	gap: var( --sc-spacing-xx-small, 6px ) !important;
+}
+
+.iftp-sc-entries-pagination .page-numbers {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	box-sizing: border-box !important;
+	min-width: 34px !important;
+	height: 34px !important;
+	padding: 0 var( --sc-spacing-small, 10px ) !important;
+	border: 1px solid var( --sc-color-gray-200, #e5e7eb ) !important;
+	border-radius: var( --sc-border-radius-medium, 8px ) !important;
+	background: var( --sc-color-white, #fff ) !important;
+	color: var( --sc-color-gray-700, #374151 ) !important;
+	font-family: var( --sc-font-sans ) !important;
+	font-size: var( --sc-font-size-small, 13px ) !important;
+	font-weight: var( --sc-font-weight-semibold, 500 ) !important;
+	text-decoration: none !important;
+	transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease !important;
+}
+
+.iftp-sc-entries-pagination a.page-numbers:hover {
+	background: var( --sc-color-gray-50, #f9fafb ) !important;
+	border-color: var( --sc-color-gray-300, #dce0e6 ) !important;
+	color: var( --sc-color-gray-900, #111827 ) !important;
+}
+
+.iftp-sc-entries-pagination .page-numbers.current {
+	background: var( --sc-color-primary-500, #388051 ) !important;
+	border-color: var( --sc-color-primary-500, #388051 ) !important;
+	color: var( --sc-color-white, #fff ) !important;
+	cursor: default !important;
+}
+
+.iftp-sc-entries-pagination .page-numbers.dots {
+	border-color: transparent !important;
+	background: transparent !important;
+	color: var( --sc-color-gray-400, #9ca3af ) !important;
+	cursor: default !important;
+}
+
+.iftp-sc-entries-pagination .page-numbers.prev,
+.iftp-sc-entries-pagination .page-numbers.next {
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+	font-size: var( --sc-font-size-medium, 16px ) !important;
+}
+
+/*
+ * "Go to" jump field — deliberately minimal: no border except the bottom
+ * one, a faint ambient shadow instead of a boxed outline, so it reads as a
+ * lighter-weight escape hatch next to the page-number pills rather than
+ * another button competing with them.
+ */
+.iftp-sc-pagination-jump {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: var( --sc-spacing-xx-small, 5px ) !important;
+	margin-left: var( --sc-spacing-x-small, 8px ) !important;
+}
+
+.iftp-sc-pagination-jump__label {
+	font-family: var( --sc-font-sans ) !important;
+	font-size: var( --sc-font-size-x-small, 11px ) !important;
+	color: var( --sc-color-gray-500, #6b7280 ) !important;
+	white-space: nowrap !important;
+}
+
+.iftp-sc-pagination-jump__input {
+	box-sizing: border-box !important;
+	width: 28px !important;
+	height: 22px !important;
+	padding: 0 !important;
+	border: none !important;
+	border-bottom: 1px solid var( --sc-color-gray-300, #dce0e6 ) !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	box-shadow: 0 1px 2px rgba( 13, 19, 30, 0.06 ) !important;
+	text-align: center !important;
+	font-family: var( --sc-font-sans ) !important;
+	font-size: var( --sc-font-size-x-small, 11px ) !important;
+	line-height: 22px !important;
+	color: var( --sc-color-gray-900, #111827 ) !important;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+	-moz-appearance: textfield !important;
+}
+
+.iftp-sc-pagination-jump__input:focus {
+	outline: none !important;
+	border-bottom-color: var( --sc-color-primary-500, #388051 ) !important;
+	box-shadow: 0 2px 5px rgba( 13, 19, 30, 0.14 ) !important;
+}
+
+/* Hides the native number-spinner arrows — a clean underline field reads better without them. */
+.iftp-sc-pagination-jump__input::-webkit-outer-spin-button,
+.iftp-sc-pagination-jump__input::-webkit-inner-spin-button {
+	-webkit-appearance: none !important;
+	margin: 0 !important;
+}

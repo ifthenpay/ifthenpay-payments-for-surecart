@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="uuid-5aa1334e-a374-461a-8cad-1ad7c312c035" data-name="ifthenpay" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24.87 47.74">
+  <defs>
+    <style>
+      .uuid-95ba4da0-3a87-4c82-b3d5-26c342e4290f {
+        fill: #00609c;
+      }
+
+      .uuid-48f60486-9f20-45be-8c99-c9d954e5b152 {
+        fill: url(#uuid-b31257e0-a438-4e11-9b8d-bc3f93feea45);
+      }
+
+      .uuid-20abcd62-a3dd-4126-bda0-f699db0cbbd7 {
+        fill: url(#uuid-67dfffdc-29ca-4f10-bced-c5d8277a49fc);
+      }
+    </style>
+    <linearGradient id="uuid-b31257e0-a438-4e11-9b8d-bc3f93feea45" x1="14.67849" y1="-2451.82753" x2="24.40841" y2="-2451.82753" gradientTransform="translate(0 -2442.83201) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00a7e2"/>
+      <stop offset=".3" stop-color="#00a4df"/>
+      <stop offset=".5" stop-color="#009bd7"/>
+      <stop offset=".7" stop-color="#008dc8"/>
+      <stop offset=".9" stop-color="#0078b4"/>
+      <stop offset="1" stop-color="#00609c"/>
+    </linearGradient>
+    <linearGradient id="uuid-67dfffdc-29ca-4f10-bced-c5d8277a49fc" x1="12.1188" y1="-2462.99969" x2="-1.52546" y2="-2462.99969" xlink:href="#uuid-b31257e0-a438-4e11-9b8d-bc3f93feea45"/>
+  </defs>
+  <g id="uuid-679048d4-a212-4616-90e7-2eb532c9dffb" data-name="simbolo">
+    <path class="uuid-95ba4da0-3a87-4c82-b3d5-26c342e4290f" d="M10.11228,32.59338l4.13801,1.4539-2.57228,6.93397c-1.67757,4.36169-5.92742,6.59846-10.06544,6.71029-.22368-.44735-1.67757-4.47353-1.67757-4.47353h1.67757c2.68412,0,4.58537-.22368,5.70375-3.35515l2.68412-7.15765h0l.11184-.11184Z"/>
+    <polygon class="uuid-95ba4da0-3a87-4c82-b3d5-26c342e4290f" points="2.83623 4.41015 21.73689 4.41015 21.14204 .36515 19.27645 .04846 5.29667 .04846 3.73094 .60765 2.83623 4.41015"/>
+    <path class="uuid-48f60486-9f20-45be-8c99-c9d954e5b152" d="M17.47444,13.24537c-.55919,1.56573-1.00654,3.46698-3.35515,4.69721l6.37478-2.3486c.78287-.33551,1.23022-1.4539,1.56574-2.23676,1.47891-3.98168,1.47183-3.96275,2.57228-6.93397C25.8623,3.06809,23.17819.04846,19.59937.04846h-.67103c1.00655,0,3.13147.55919,2.12493,3.35515,0,0-3.57882,9.84176-3.57883,9.84176Z"/>
+    <path class="uuid-20abcd62-a3dd-4126-bda0-f699db0cbbd7" d="M10.77674,34.83014c.55919,1.4539,1.6062,3.21998,1.15885,5.45674l2.41997-6.46329c.33551-.78287.33551-1.11838,0-2.01309L3.95461,3.51545C2.94807.60766,5.07299.04847,6.19138.04847h-.8947C1.71785.04847-.85443,3.17993.37579,6.53508l10.40095,28.29507h0Z"/>
+  </g>
+</svg>
